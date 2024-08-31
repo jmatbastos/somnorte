@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UploadController!{% endblock %}
+
+{% block body %}
+
+
+<div class="container">
+    <div class="row row-xl-eq-height">
+        <div class="col-xl-3">
+        </div>					
+        <!-- Contact Content -->
+        <div class="col-xl-6">
+            <div class="contact_content">
+                <div class="contact_form_container">
+
+                    <h1>Characters file upload</h1>                
+                
+                    {% if errors > 0 %}
+                        <h2>Validation failed</h2>
+                        <ul>
+                        {% for field, errorMessage in errorMessages %}
+                            <li>{{ errorMessage }}</li>
+                        {% endfor %}
+                        </ul>
+                        <br>
+                        {% endif %}
+                
+                
+                    <form enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token('file') }}">
+                                                
+                        <div class="form-group">
+                            <label for="fileUpload">File Upload</label>
+                            <input type="file" class="form-control-file" id="fileUpload" name="file" />
+                        </div>								
+                        <br>
+
+                        <div>
+                        <p>Before uploading, check out the <a href="#" onmouseover="popUP()">file upload restrictions</a>.</p>
+                        </div>
+
+                        <br>
+                        
+                        <a href="{{ path('upload') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>								
+                        <input type="submit" class="contact_button" value="Submit">
+                    
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-xl-3">
+        </div>	
+    </div>
+</div>            
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        function popUP() {
+        window.alert("file upload restrictions: \n- allowed file types: csv\n- maximum size: 1000kB\n\nformat:\nserie_id,episode_id,character name,number of lines\nexample:\n1,101,ANNALEE,4\n1,101,BORIBON,7");
+        }
+    </script>
+
+{% endblock %}
