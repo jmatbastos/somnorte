@@ -1,0 +1,83 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Assign actor{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+		<form method="post">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token('assign') }}">
+			<div class="row justify-content-center">
+				<h3>Select actor to assign to characters:</h3>
+			</div>
+		  
+		  	</br>
+		  
+		  
+		  	<div class="row">
+				<div class="col">
+					<h4 style="text-align:center;">Characters</h4>
+					
+					<div class="form-check">
+						{%for c in characters %}			
+						<input class="form-check-input" type="checkbox" name="characters[]" value="{{c.char_name}}" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">{{c.char_name}}</label>
+						<br>
+						{% endfor %}
+					</div>
+				
+				</div>
+				<div style="text-align:center;border-left-style: solid;border-left-color: coral;border-right-color: white;border-top-color: white;border-bottom-color: white;" class="col">
+
+					<h4>Actors</h4>
+
+						<div>
+						
+						<select name="actor" class="form-select" aria-label="select actor to assign">
+							{%for a in actors %}
+							<option value="{{a.id}}">{{a.name}}</option>
+							{% endfor %}
+						</select>
+						
+						
+						</div>
+
+					
+
+				</div>
+			</div>
+				<a href="{{ path('app_assign_actor_show') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>
+				<button type="submit" class="btn btn-outline-info btn-lg float-right">Finish</button>
+		</form>
+		</div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script>
+	$(function () {
+	  $('#close').click(function () {
+		window.close()
+		return false
+	  })
+	})
+</script>
+{% endblock %}

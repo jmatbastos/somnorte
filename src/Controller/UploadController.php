@@ -7,13 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use App\Repository\CharacterRepository;
+use Symfony\Component\Filesystem\Filesystem;
+
+
 
 class UploadController extends AbstractController
 {
@@ -21,12 +21,12 @@ class UploadController extends AbstractController
     
 
 	private $validator;
-    private $filesystem;
+    private $character_repository;
 	
-	public function __construct(ValidatorInterface $validator, Filesystem $filesystem)
+	public function __construct(ValidatorInterface $validator, CharacterRepository $character_repository)
     {
         $this->validator = $validator;
-		$this->filesystem = $filesystem;
+        $this->character_repository = $character_repository;
     }
     
     #[Route('/upload', name: 'upload')]
@@ -82,32 +82,25 @@ class UploadController extends AbstractController
 				   throw new FileException('Failed to upload file ' . $e->getMessage());
 			   }
 
-               // file upload success; 
+               // file upload success
+               $filesystem = new Filesystem();
+               $contents = $filesystem->readFile("c:\\xampp\\htdocs\\somnorte\\public\\uploads\\$filename");
 
+               //for ($i = 1; $i <= strlen($contents)-4; $i=$i+4) {
+               // echo substr($contents,$i,4);
+               //}
+
+               $contents_array = explode(PHP_EOL,$contents);
+               
                // insert into database
 
-                $process = Process::fromShellCommandline('c:\xampp\mysql\bin\mysql.exe -usomnorte -pS0mn0rt somnorte < uploads\Book1.sql ');
-                $process->run();
+               for($i=0; $i<count($contents_array); $i++)
+                $this->character_repository->insert_characters($contents_array[$i]);
 
-                // executes after the command finishes
-                if (!$process->isSuccessful()) {
-                    throw new ProcessFailedException($process);
-                }
-
-                echo $process->getOutput();
-
-                //delete files
-                /*
-                $process = Process::fromShellCommandline('del uploads\Book1.sql ');
-                $process->run();
-                $process = Process::fromShellCommandline('del uploads\\' . $filename);
-                $process->run();
-                */
-
-                exit();
+                
 			  
 			   
-			   // return $this->redirectToRoute('upload');
+			   return $this->redirectToRoute('app_assign_actor');
 			 
 			} 
 			 

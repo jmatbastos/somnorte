@@ -1,10 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello UploadController!{% endblock %}
+{% block title %}Upload{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact_responsive.css">
+{% endblock %}
 
 {% block body %}
-
-
 <div class="container">
     <div class="row row-xl-eq-height">
         <div class="col-xl-3">
@@ -14,7 +18,7 @@
             <div class="contact_content">
                 <div class="contact_form_container">
 
-                    <h1>Characters file upload</h1>                
+                    <h3 style="text-align: center">Characters file upload</h3>                
                 
                     {% if errors > 0 %}
                         <h2>Validation failed</h2>
@@ -31,8 +35,8 @@
                         <input type="hidden" name="csrf_token" value="{{ csrf_token('file') }}">
                                                 
                         <div class="form-group">
-                            <label for="fileUpload">File Upload</label>
-                            <input type="file" class="form-control-file" id="fileUpload" name="file" />
+                            <br>
+                            <input type="file" class="form-control" id="fileUpload" name="file" />
                         </div>								
                         <br>
 
@@ -43,7 +47,7 @@
                         <br>
                         
                         <a href="{{ path('upload') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>								
-                        <input type="submit" class="contact_button" value="Submit">
+                        <button type="submit" class="btn btn-outline-primary btn-lg float-right">Upload</button>
                     
                     </form>
                 </div>

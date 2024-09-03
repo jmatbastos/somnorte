@@ -1,0 +1,69 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Assign actor{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+			<div class="row justify-content-center">
+				<h3>Episodes:</h3>
+			</div>
+		  
+		    </br>
+		  
+		  <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Series</th>
+                <th scope="col">Episode</th>
+                <th scope="col">Character</th>
+                <th scope="col">No of lines</th>
+                <th scope="col">actor</th>                
+                </tr>
+            </thead>
+            <tbody>
+              {%for e in episodes %}
+                <tr>
+                <td>{{e.REF}}</td>
+                <td>{{e.episode_id}}</td>
+                <td>{{e.char_name}}</td>
+                <td>{{e.no_of_lines}}</td>
+                <td>{{e.actor_name}}</td>
+                </tr
+              {% endfor %}  
+            </tbody>
+            </table>
+        <br>
+		    <a href="{{ path('app_assign_actor') }}" class="btn btn-outline-info btn-lg float-right" >Back</a>
+		</div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script>
+	$(function () {
+	  $('#close').click(function () {
+		window.close()
+		return false
+	  })
+	})
+</script>
+{% endblock %}

@@ -1,41 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Log in{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact_responsive.css">
+{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+<div class="super_container">
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
+	<!-- Contact -->
 
-        <h1 class="h3 mb-3 font-weight-normal">Please Log in</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+	<div class="contact">
+	
+		<div class="container">
+			<div class="row row-xl-eq-height">
+				<div class="col-xl-3">
+				</div>					
+				<!-- Contact Content -->
+				<div class="col-xl-6">
+					<div class="contact_content">
+						<div class="contact_form_container">
+                        <p style="text-align: center" class="h1 mb-3 font-weight-normal">Log in</p>
+							{% if error %}
+								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
 
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
+							{% if app.user %}
+								<div class="mb-3">
+									You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+								</div>
+							{% else %}																				
+							<form method="post">
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+								
+								<div class="row">
+									<label for="inputEmail">Email</label>
+                                    <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
-            </div>
-        #}
+								</div>
+								<br>
+								<div class="row">
+									<label for="inputPassword">Password</label>
+                                    <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>								
+                                </div>
+								<br>
+                                {#
+                                    Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                                    See https://symfony.com/doc/current/security/remember_me.html
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+                                    <div class="checkbox mb-3">
+                                        <input type="checkbox" name="_remember_me" id="_remember_me">
+                                        <label for="_remember_me">Remember me</label>
+                                    </div>
+                                #}								
+								<br>
+								<button type="submit" class="btn btn-outline-primary btn-lg float-right">Login</button>
+							</form>
+							{% endif %}						
+						
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xl-3">
+				</div>	
+			</div>
+		</div>				
+	</div>
+</div>
 {% endblock %}
+
+

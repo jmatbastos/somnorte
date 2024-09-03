@@ -2,27 +2,79 @@
 
 {% block title %}Register{% endblock %}
 
-{% block body %}
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.name, {
-            label: 'Name'
-        }) }}
-        {{ form_row(registrationForm.nif, {
-            label: 'NIF'
-        }) }}
-        {{ form_row(registrationForm.roles, {
-            label: 'ROLE'
-        }) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword.first) }}
-        {{ form_row(registrationForm.plainPassword.second) }}
-
-
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact_responsive.css">
 {% endblock %}
+
+{% block body %}
+<div class="super_container">
+
+	<!-- Contact -->
+
+	<div class="contact" style="background-image:url({{asset('images')}}/contact.jpg); background-repeat: no-repeat;">>
+	
+		<div class="container">
+			<div class="row row-xl-eq-height">
+				<div class="col-xl-3">
+				</div>					
+				<!-- Contact Content -->
+				<div class="col-xl-6">
+					<div class="contact_content">
+						<div class="contact_form_container">
+                        <h1 style="text-align: center">Register</h1>
+							{{ form_start(registrationForm) }}							
+								<div class="row">
+									<div class="col-lg-6 contact_name_col">
+										{{ form_label(registrationForm.name, 'Name:') }}
+										{{ form_widget(registrationForm.name, {'attr': {'class': 'contact_input'}}) }}
+									</div>
+                                    <div class="col-lg-6 contact_name_col">
+										{{ form_label(registrationForm.nif, 'NIF:') }}
+										{{ form_widget(registrationForm.nif, {'attr': {'class': 'contact_input'}}) }}
+									</div>
+                                </div>
+								<br>                                
+                                <div class="row">
+                                    <div class="col-lg-6 contact_name_col">
+										{{ form_label(registrationForm.roles, 'ROLE:') }}
+										{{ form_widget(registrationForm.roles, {'attr': {'class': 'contact_input'}}) }}
+									</div>                                    
+									<div class="col-lg-6">
+										{{ form_label(registrationForm.email, 'Email:') }}											
+										{{ form_widget(registrationForm.email, {'attr': {'class': 'contact_input'}}) }}
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-lg-6 contact_name_col">
+										{{ form_label(registrationForm.plainPassword.first) }}
+										{{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'contact_input'}}) }}
+									</div>
+									<div class="col-lg-6">
+										{{ form_label(registrationForm.plainPassword.second) }}
+										{{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'contact_input'}}) }}
+									</div>
+								</div>								
+								<br>
+								{{ form_errors(registrationForm.name) }}
+								{{ form_errors(registrationForm.email) }}
+								{{ form_errors(registrationForm.plainPassword.first) }}
+								{{ form_errors(registrationForm.plainPassword.second) }}
+								<br>
+								<button type="submit" class="btn btn-outline-primary btn-lg float-right">Register</button>
+							{{ form_end(registrationForm) }}
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xl-3">
+				</div>	
+			</div>
+		</div>				
+	</div>
+</div>
+{% endblock %}
+
+
