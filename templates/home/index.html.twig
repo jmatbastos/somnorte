@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/elements.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/elements_responsive.css">
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container" style="margin: 100px 600px;">
+	
+
+                    <div class="elements_title">Menu</div>
+                    {% if user_logged_in == false %}
+                    <p><div class="button button_1"><a href="{{ path('app_login') }}">login<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>                
+                    <p><div class="button button_1"><a href="{{ path('register') }}">register<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    {% endif %}                
+                    {% if user_logged_in == true %}
+                    <p><div class="button button_1"><a href="{{ path('app_series') }}">Create new series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    <p><div class="button button_1"><a href="{{ path('upload') }}">upload episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    <p><div class="button button_1"><a href="{{ path('app_assign_actor') }}">Assign actor<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    <p><div class="button button_1"><a href="{{ path('app_assign_actor_show') }}">Show episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    <p><div class="button button_1"><a href="{{ path('app_logout') }}">logout<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                    {% endif %}
+
+
+</div>
+{% endblock %}

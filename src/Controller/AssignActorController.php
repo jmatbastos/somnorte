@@ -17,7 +17,7 @@ class AssignActorController extends AbstractController
     {
         $this->character_repository = $character_repository;
     }
-    
+     
     
     #[Route('/assign/actor', name: 'app_assign_actor')]
     public function assign(Request $request): Response

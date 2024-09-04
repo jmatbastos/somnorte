@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Series{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact_responsive.css">
+{% endblock %}
+
+{% block body %}
+<div class="super_container">
+
+	<!-- Contact -->
+
+	<div class="contact">
+	
+		<div class="container">
+			<div class="row row-xl-eq-height">
+				<div class="col-xl-3">
+				</div>					
+				<!-- Contact Content -->
+				<div class="col-xl-6">
+					<div class="contact_content">
+						<div class="contact_form_container">
+                        <p style="text-align: center" class="h1 mb-3 font-weight-normal">Create new series</p>
+
+
+																				
+							<form method="post">
+								<input type="hidden" name="csrf_token" value="{{ csrf_token('series') }}">
+
+								
+								<div class="row">
+									<label >REF</label>
+                                    <input type="text"  name="ref"  class="form-control"  required autofocus>
+
+								</div>
+								<br>
+								<div class="row">
+									<label >Name</label>
+                                    <input type="text" name="name"  class="form-control"  required>								
+                                </div>
+								<br>
+                                <div class="row">
+									<label >Client</label>
+								</div>
+								<div class="row">	
+                                    <select name="client" class="form-control" aria-label="select client">
+                                        {%for c in clients %}
+                                        <option value="{{c.id}}">{{c.name}}</option>
+                                        {% endfor %}
+                                    </select>							
+                                </div>
+								<br>							
+								<br>
+								<a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg">Cancel</a>
+								<button type="submit" class="btn btn-outline-primary btn-lg float-right">Create</button>
+							</form>
+					
+						
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xl-3">
+				</div>	
+			</div>
+		</div>				
+	</div>
+</div>
+{% endblock %}
+
+
+
