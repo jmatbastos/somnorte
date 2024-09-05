@@ -41,6 +41,11 @@ class SeriesController extends AbstractController
 
                 $this->series_repository->create_series($ref,$name,$client);
 
+                $this->addFlash(
+                    'notice',
+                    'Success: New series was created!'
+                );
+
 
                 return $this->redirectToRoute('app_home');
                 
