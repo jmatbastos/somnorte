@@ -21,15 +21,24 @@
 		<form method="post">
 			<input type="hidden" name="csrf_token" value="{{ csrf_token('assign') }}">
 			<div class="row justify-content-center">
-				<h3>Select actor to assign to characters:</h3>
+				<h3>Select actor to assign to characters:</h3>				
 			</div>
 		  
 		  	</br>
+
+			{% for message in app.flashes('notice') %}
+				<div class="alert alert-info" style="text-align:center">
+				{{ message }}
+				</div>
+				</br>
+			{% endfor %}
 		  
 		  
 		  	<div class="row">
 				<div class="col">
 					<h4 style="text-align:center;">Characters</h4>
+
+
 					
 					<div class="form-check">
 						{%for c in characters %}			

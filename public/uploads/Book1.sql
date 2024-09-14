@@ -1,1 +1,0 @@
-INSERT INTO characters (series_id, episode_id, char_name, no_of_lines) VALUES (1,101,'ANNALEE',4);

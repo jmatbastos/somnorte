@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use App\Repository\CharacterRepository;
+use App\Repository\PersonasRepository;
+use App\Repository\EpisodesRepository;
 use Symfony\Component\Filesystem\Filesystem;
 
 
@@ -22,11 +24,15 @@ class UploadController extends AbstractController
 
 	private $validator;
     private $character_repository;
-	
-	public function __construct(ValidatorInterface $validator, CharacterRepository $character_repository)
+    private $personas_repository;	
+    private $episodes_repository;	
+
+	public function __construct(ValidatorInterface $validator, CharacterRepository $character_repository, PersonasRepository $personas_repository, EpisodesRepository $episodes_repository)
     {
         $this->validator = $validator;
         $this->character_repository = $character_repository;
+        $this->personas_repository = $personas_repository;
+        $this->episodes_repository = $episodes_repository;				
     }
     
     #[Route('/upload', name: 'upload')]
@@ -86,21 +92,30 @@ class UploadController extends AbstractController
                $filesystem = new Filesystem();
                $contents = $filesystem->readFile("c:\\xampp\\htdocs\\somnorte\\public\\uploads\\$filename");
 
-               //for ($i = 1; $i <= strlen($contents)-4; $i=$i+4) {
-               // echo substr($contents,$i,4);
-               //}
-
                $contents_array = explode(PHP_EOL,$contents);
                
                // insert into database
 
-               for($i=0; $i<count($contents_array); $i++)
-                $this->character_repository->insert_characters($contents_array[$i]);
+               //for($i=0; $i<count($contents_array); $i++)
+               // $this->character_repository->insert_characters($contents_array[$i]);
 
-                
-			  
+			   for($i=0; $i<count($contents_array); $i++) {
+					if (strlen($contents_array[$i]) != 0) {
+						if ($i==0) 
+							$contents_array[$i] = substr($contents_array[$i],3); 
+						$this->personas_repository->insert_personas($contents_array[$i]);
+						$this->episodes_repository->insert_episodes($contents_array[$i]); 
+						$this->episodes_repository->insert_no_of_lines($contents_array[$i]);
+					}					   
+				}
+			
+
+				$this->addFlash(
+                    'notice',
+                    'Success: CVS File uploaded!'
+                );
 			   
-			   return $this->redirectToRoute('app_assign_actor');
+			   return $this->redirectToRoute('app_home');
 			 
 			} 
 			 

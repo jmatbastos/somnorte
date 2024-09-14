@@ -24,11 +24,11 @@
                     <br>
 
                     <div class="elements_title">Menu</div>
-                    {% if user_logged_in == false %}
+                    {% if not app.user %}
                     <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_login') }}">  login  <div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>                
                     <p><div class="button button_1" style="width: 300px;"><a href="{{ path('register') }}">register<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
                     {% endif %}                
-                    {% if user_logged_in == true %}
+                    {% if app.user %}
                     <p><div class="button button_1"style="width: 300px;"><a href="{{ path('app_series') }}">Create new series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
 
                     <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

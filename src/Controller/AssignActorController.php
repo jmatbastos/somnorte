@@ -39,14 +39,19 @@ class AssignActorController extends AbstractController
                 $characters = $request->get("characters");
 
 
-
-                $this->character_repository->assign_actor($actor_id,$characters);
-
-
-                return $this->redirectToRoute('app_assign_actor_show');
+                
+                if ($characters!= NULL && $actor_id !=NULL) {
+                    $this->character_repository->assign_actor($actor_id,$characters);
+                    return $this->redirectToRoute('app_assign_actor_show');
+                }
+                $this->addFlash(
+                    'notice',
+                    'Error: Please select at least one character and one actor!'
+                );
                 
             }
 
+            // Method is GET
             $data['characters'] = $this->character_repository->get_characters();
             $data['actors'] = $this->character_repository->get_actors();
             return $this->render('assign_actor/assign.html.twig', $data);
