@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 03, 2024 at 05:40 PM
+-- Generation Time: Sep 14, 2024 at 01:13 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,7 +46,7 @@ CREATE TABLE `characters` (
 --
 
 INSERT INTO `characters` (`id`, `episode_id`, `char_name`, `actor_id`, `no_of_lines`, `series_id`, `studio_id`, `director_id`, `date`, `id_cachet`, `status`) VALUES
-(290, 106, 'ANNALEE', 3, 13, 0, NULL, NULL, NULL, NULL, NULL),
+(290, 106, 'ANNALEE', 3, 13, 1, NULL, NULL, NULL, NULL, NULL),
 (291, 106, 'BORIBON', 3, 11, 1, NULL, NULL, NULL, NULL, NULL),
 (292, 106, 'MÉDICO', 1, 5, 1, NULL, NULL, NULL, NULL, NULL),
 (293, 106, 'NARRADOR', NULL, 13, 1, NULL, NULL, NULL, NULL, NULL),
@@ -129,6 +129,38 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `episodes`
+--
+
+CREATE TABLE `episodes` (
+  `id` int(11) NOT NULL,
+  `episode` int(11) NOT NULL,
+  `series_REF` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `episodes`
+--
+
+INSERT INTO `episodes` (`id`, `episode`, `series_REF`) VALUES
+(1, 106, 'P_10'),
+(5, 107, 'P_10'),
+(8, 108, 'P_10'),
+(15, 109, 'P_10'),
+(21, 110, 'P_10'),
+(25, 111, 'P_10'),
+(29, 112, 'P_10'),
+(35, 113, 'P_10'),
+(40, 114, 'P_10'),
+(43, 115, 'P_10'),
+(47, 116, 'P_10'),
+(101, 117, 'P_10'),
+(104, 117, 'P_11'),
+(105, 118, 'P_11');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `messenger_messages`
 --
 
@@ -145,12 +177,140 @@ CREATE TABLE `messenger_messages` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `no_of_lines`
+--
+
+CREATE TABLE `no_of_lines` (
+  `id` int(11) NOT NULL,
+  `episode_id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `no_of_lines` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `no_of_lines`
+--
+
+INSERT INTO `no_of_lines` (`id`, `episode_id`, `persona_id`, `no_of_lines`) VALUES
+(1, 1, 1, 13),
+(2, 1, 2, 11),
+(3, 1, 3, 5),
+(4, 1, 4, 13),
+(5, 5, 1, 14),
+(6, 5, 2, 11),
+(7, 5, 4, 10),
+(8, 8, 1, 6),
+(9, 8, 5, 2),
+(10, 8, 2, 16),
+(11, 8, 6, 2),
+(12, 8, 7, 1),
+(13, 8, 4, 15),
+(14, 8, 8, 2),
+(15, 15, 1, 5),
+(16, 15, 9, 1),
+(17, 15, 5, 14),
+(18, 15, 2, 18),
+(19, 15, 4, 9),
+(20, 15, 8, 1),
+(21, 21, 1, 12),
+(22, 21, 2, 14),
+(23, 21, 10, 3),
+(24, 21, 4, 6),
+(25, 25, 1, 2),
+(26, 25, 2, 17),
+(27, 25, 10, 4),
+(28, 25, 4, 14),
+(29, 29, 1, 3),
+(30, 29, 2, 21),
+(31, 29, 11, 3),
+(32, 29, 10, 5),
+(33, 29, 4, 20),
+(34, 29, 12, 1),
+(35, 35, 1, 10),
+(36, 35, 5, 2),
+(37, 35, 2, 13),
+(38, 35, 4, 15),
+(39, 35, 12, 4),
+(40, 40, 1, 10),
+(41, 40, 2, 10),
+(42, 40, 4, 16),
+(43, 43, 1, 8),
+(44, 43, 5, 4),
+(45, 43, 2, 14),
+(46, 43, 4, 16),
+(47, 47, 1, 7),
+(48, 47, 2, 8),
+(49, 47, 4, 14),
+(50, 47, 12, 3),
+(101, 101, 1, 13),
+(102, 101, 2, 11),
+(103, 101, 3, 5),
+(104, 104, 13, 13),
+(105, 105, 14, 25);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `personas`
+--
+
+CREATE TABLE `personas` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `series_REF` varchar(80) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `personas`
+--
+
+INSERT INTO `personas` (`id`, `name`, `series_REF`) VALUES
+(1, 'ANNALEE', 'P_10'),
+(2, 'BORIBON', 'P_10'),
+(3, 'MÉDICO', 'P_10'),
+(4, 'NARRADOR', 'P_10'),
+(5, 'BEN', 'P_10'),
+(6, 'COELHO', 'P_10'),
+(7, 'ESQUILO', 'P_10'),
+(8, 'OURIÇO', 'P_10'),
+(9, 'BEM', 'P_10'),
+(10, 'GATINHO', 'P_10'),
+(11, 'FRIZZY', 'P_10'),
+(12, 'SNEEZY', 'P_10'),
+(13, 'NARRADOR', 'P_11'),
+(14, 'LARILAS', 'P_11');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `persona_has_actors`
+--
+
+CREATE TABLE `persona_has_actors` (
+  `id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `actor_id` int(11) NOT NULL,
+  `no_of_lines` int(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `persona_has_actors`
+--
+
+INSERT INTO `persona_has_actors` (`id`, `persona_id`, `actor_id`, `no_of_lines`) VALUES
+(7, 1, 1, NULL),
+(8, 2, 2, NULL),
+(9, 3, 3, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `series`
 --
 
 CREATE TABLE `series` (
   `id` int(11) NOT NULL,
-  `REF` text NOT NULL,
+  `REF` varchar(80) DEFAULT NULL,
   `name` text NOT NULL,
   `client_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -161,7 +321,10 @@ CREATE TABLE `series` (
 
 INSERT INTO `series` (`id`, `REF`, `name`, `client_id`) VALUES
 (1, 'P_10', 'Serie teste', 6),
-(2, 'P_11', 'Serie teste 2', 8);
+(2, 'P_11', 'Serie teste 2', 8),
+(3, 'P_12', 'Serie teste 3', 6),
+(4, 'P_13', 'Serie teste 4', 8),
+(5, 'P_14', 'Serie teste 5', 8);
 
 -- --------------------------------------------------------
 
@@ -233,6 +396,14 @@ ALTER TABLE `doctrine_migration_versions`
   ADD PRIMARY KEY (`version`);
 
 --
+-- Indexes for table `episodes`
+--
+ALTER TABLE `episodes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `episode` (`episode`,`series_REF`),
+  ADD KEY `series_REF` (`series_REF`);
+
+--
 -- Indexes for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
@@ -242,11 +413,36 @@ ALTER TABLE `messenger_messages`
   ADD KEY `IDX_75EA56E016BA31DB` (`delivered_at`);
 
 --
+-- Indexes for table `no_of_lines`
+--
+ALTER TABLE `no_of_lines`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `episode_id_2` (`episode_id`,`persona_id`),
+  ADD KEY `episode_id` (`episode_id`),
+  ADD KEY `persona_id` (`persona_id`);
+
+--
+-- Indexes for table `personas`
+--
+ALTER TABLE `personas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`,`series_REF`) USING HASH,
+  ADD KEY `series_REF` (`series_REF`);
+
+--
+-- Indexes for table `persona_has_actors`
+--
+ALTER TABLE `persona_has_actors`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `persona_id` (`persona_id`),
+  ADD KEY `actor_id` (`actor_id`);
+
+--
 -- Indexes for table `series`
 --
 ALTER TABLE `series`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `REF` (`REF`) USING HASH,
+  ADD UNIQUE KEY `REF` (`REF`),
   ADD KEY `client_id` (`client_id`);
 
 --
@@ -273,16 +469,40 @@ ALTER TABLE `characters`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
 
 --
+-- AUTO_INCREMENT for table `episodes`
+--
+ALTER TABLE `episodes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+
+--
 -- AUTO_INCREMENT for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `no_of_lines`
+--
+ALTER TABLE `no_of_lines`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+
+--
+-- AUTO_INCREMENT for table `personas`
+--
+ALTER TABLE `personas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `persona_has_actors`
+--
+ALTER TABLE `persona_has_actors`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
 -- AUTO_INCREMENT for table `series`
 --
 ALTER TABLE `series`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `studios`
@@ -307,6 +527,32 @@ ALTER TABLE `characters`
   ADD CONSTRAINT `characters_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `characters_ibfk_2` FOREIGN KEY (`director_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `characters_ibfk_3` FOREIGN KEY (`studio_id`) REFERENCES `studios` (`id`);
+
+--
+-- Constraints for table `episodes`
+--
+ALTER TABLE `episodes`
+  ADD CONSTRAINT `episodes_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`);
+
+--
+-- Constraints for table `no_of_lines`
+--
+ALTER TABLE `no_of_lines`
+  ADD CONSTRAINT `no_of_lines_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
+  ADD CONSTRAINT `no_of_lines_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`);
+
+--
+-- Constraints for table `personas`
+--
+ALTER TABLE `personas`
+  ADD CONSTRAINT `personas_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`);
+
+--
+-- Constraints for table `persona_has_actors`
+--
+ALTER TABLE `persona_has_actors`
+  ADD CONSTRAINT `persona_has_actors_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `persona_has_actors_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`);
 
 --
 -- Constraints for table `series`

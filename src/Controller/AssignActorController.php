@@ -6,16 +6,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\CharacterRepository;
+use App\Repository\PersonasRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class AssignActorController extends AbstractController
 {
     
     private $character_repository;
+    private $personas_repository;  
+    private $user_repository;      
 	
-	public function __construct(CharacterRepository $character_repository)
+	public function __construct(CharacterRepository $character_repository, PersonasRepository $personas_repository, UserRepository $user_repository)
     {
         $this->character_repository = $character_repository;
+        $this->personas_repository = $personas_repository;     
+        $this->user_repository = $user_repository;           
     }
      
     
@@ -35,14 +41,15 @@ class AssignActorController extends AbstractController
                         ['content-type' => 'text/plain']);
                 }
 
-                $actor_id = $request->get("actor");
+                $actors = $request->get("actors");
                 $characters = $request->get("characters");
 
 
                 
-                if ($characters!= NULL && $actor_id !=NULL) {
-                    $this->character_repository->assign_actor($actor_id,$characters);
-                    return $this->redirectToRoute('app_assign_actor_show');
+                if ($characters!= NULL && $actors !=NULL) {
+                    $this->personas_repository->assign_actor($actors,$characters);
+                    //return $this->redirectToRoute('app_home');
+                    exit();
                 }
                 $this->addFlash(
                     'notice',
@@ -52,8 +59,8 @@ class AssignActorController extends AbstractController
             }
 
             // Method is GET
-            $data['characters'] = $this->character_repository->get_characters();
-            $data['actors'] = $this->character_repository->get_actors();
+            $data['characters'] = $this->personas_repository->get_personas('P_10');
+            $data['actors'] = $this->user_repository->get_actors();
             return $this->render('assign_actor/assign.html.twig', $data);
         }
 
