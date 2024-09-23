@@ -33,6 +33,7 @@ class PersonasRepository extends ServiceEntityRepository
 
     }
 
+    /*
     public function get_personas($series_REF)
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -44,6 +45,21 @@ class PersonasRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
 
     } 
+    */
+
+    public function get_personas($series_REF)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT p.id, p.name, u.name as actor FROM personas as p LEFT JOIN (persona_has_actors as pa INNER JOIN `users` as u ON pa.actor_id=u.id) ON p.id=pa.persona_id WHERE p.series_REF='$series_REF'";
+
+        $resultSet = $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    } 
+
+    
 
     public function assign_actor($actors, $characters)
     {
@@ -64,6 +80,49 @@ class PersonasRepository extends ServiceEntityRepository
 
 
     } 
+
+    public function get_episodes($series_REF)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql ="SELECT e.series_REF as REF, e.episode as episode_id, p.name as char_name, p.id as char_id, u.name as actor_name, n.no_of_lines, n.id 
+        FROM persona_has_actors as pa 
+        INNER JOIN users as u 
+        RIGHT JOIN (personas as p INNER JOIN (episodes as e, no_of_lines as n) ON (n.episode_id=e.id AND n.persona_id=p.id)) 
+        ON (pa.persona_id=p.id AND pa.actor_id=u.id) 
+        WHERE e.series_REF='$series_REF' 
+        ORDER BY e.episode ASC";
+        
+        $resultSet =  $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    } 
+
+    public function persona_in_episode_has_actor($episode_id, $persona_id, $actor_id)
+    {    
+
+
+        $conn = $this->getEntityManager()->getConnection();  
+        
+        $sql="DELETE FROM persona_in_episode_has_actor WHERE (episode_id='$episode_id' AND persona_id='$persona_id')";
+        $conn->executeQuery($sql);
+
+        $sql="INSERT INTO persona_in_episode_has_actor (episode_id, persona_id, actor_id) VALUES ('$episode_id','$persona_id','$actor_id')";
+        $conn->executeQuery($sql);
+
+
+    }
+
+    public function get_persona_in_episode_has_actor()
+    {  
+        $conn = $this->getEntityManager()->getConnection();  
+        $sql="SELECT p.episode_id, u.name as actor_name  FROM persona_in_episode_has_actor as p INNER JOIN users as u ON p.actor_id=u.id" ;
+        $resultSet =  $conn->executeQuery($sql);
+        return $resultSet->fetchAllAssociative();
+    }
+
+
 
 
 }

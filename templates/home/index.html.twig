@@ -11,6 +11,19 @@
 
 {% block body %}
 
+<div class="container" style="text-align: right;  width: 800px;">
+				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+					<p><small>{{'You are logged in as' | trans}} {{app.user.name}}
+					{% if is_granted('ROLE_ADMIN') %}
+					&nbsp;(Administrator)
+					{% endif %}
+                    {% if is_granted('ROLE_DIRECTOR') %}
+					&nbsp;(Director)
+					{% endif %}
+					</small>&nbsp;<a href="{{ path('app_logout') }}">logout </a></p>
+				{% endif %}	
+</div>
+
 <div class="container" style="margin-top: 100px; text-align: center;  width: 800px;">
 	
 
@@ -24,27 +37,38 @@
                     <br>
 
                     <div class="elements_title">Menu</div>
+
                     {% if not app.user %}
+
                     <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_login') }}">  login  <div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>                
                     <p><div class="button button_1" style="width: 300px;"><a href="{{ path('register') }}">register<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
                     {% endif %}                
                     {% if app.user %}
-                    <p><div class="button button_1"style="width: 300px;"><a href="{{ path('app_series') }}">Create new series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
 
-                    <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <p><div class="button button_1" style="width: 300px;" ><a href="#">Episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></P>
-                    </div>
-                    <div style="margin-top: -135px; margin-left: 550px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <p><div class="button button_1" style="width: 300px;"><a href="{{ path('upload') }}">upload episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></P>
-                        <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor_show') }}">Show episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></P>
-                        <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor') }}">Assign actor<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></P>	
-                    </div>
-                    
+                    <div>
+                        <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p><div class="button button_1" style="width: 300px;" ><a href="#">Series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div>
+                        <div style="margin-top: -90px; margin-left: 550px; padding: 5px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="button button_1" style="width: 300px;"><a href="{{ path('app_series_create') }}">Create new series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
+                            <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_series_select') }}">Select series<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div> 
+                    </div> 
 
+                    {% if serie_id %}
+                    <div>
+                        <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p><div class="button button_1" style="width: 300px;" ><a href="#">Episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div>
+                        <div style="margin-top: -120px; margin-left: 550px; padding: 5px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="button button_1" style="width: 300px;"><a href="{{ path('upload') }}">upload episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
+                            <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor_show') }}">Show episodes<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                            <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor') }}">Assign actor<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>	
+                        </div>
+                    </div>                    
+                    {% endif %} 
+                 
                     
-                    
-                    
-                    <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_logout') }}">logout  <div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
 
                     {% endif %}
 

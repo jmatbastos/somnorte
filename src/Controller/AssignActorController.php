@@ -48,8 +48,7 @@ class AssignActorController extends AbstractController
                 
                 if ($characters!= NULL && $actors !=NULL) {
                     $this->personas_repository->assign_actor($actors,$characters);
-                    //return $this->redirectToRoute('app_home');
-                    exit();
+                    return $this->redirectToRoute('app_assign_actor_show');
                 }
                 $this->addFlash(
                     'notice',
@@ -59,7 +58,9 @@ class AssignActorController extends AbstractController
             }
 
             // Method is GET
-            $data['characters'] = $this->personas_repository->get_personas('P_10');
+            $session = $request->getSession();
+            $serie_id = $session->get('serie_id');                       
+            $data['characters'] = $this->personas_repository->get_personas($serie_id);           
             $data['actors'] = $this->user_repository->get_actors();
             return $this->render('assign_actor/assign.html.twig', $data);
         }
@@ -69,11 +70,81 @@ class AssignActorController extends AbstractController
     }
 
     #[Route('/assign/show', name: 'app_assign_actor_show')]
-    public function show(): Response
+    public function show(Request $request): Response
     {
-        
-        $data['episodes'] = $this->character_repository->get_episodes();
+        if ( $this->getUser() )
+        { 
 
-        return $this->render('assign_actor/show.html.twig', $data);
+            $session = $request->getSession();
+            $serie_id = $session->get('serie_id');
+            $data['episodes'] = $this->personas_repository->get_episodes($serie_id);
+            $actors = $this->personas_repository->get_persona_in_episode_has_actor();
+            for ($i=0; $i<count($data['episodes']); $i++) {
+                for ($j=0; $j<count($actors); $j++) {
+                    if( $data['episodes'][$i]['id'] == $actors[$j]['episode_id'] )
+                        $data['episodes'][$i]['actor_name'] = $actors[$j]['actor_name'];
+                }               
+            }
+
+
+
+            return $this->render('assign_actor/show.html.twig', $data);
+        }
+
+        return $this->redirectToRoute('app_login');
+
     }
+
+    #[Route('/assign/change/{episode_id}', name: 'app_assign_actor_change')]
+    public function change(Request $request, $episode_id): Response
+    {
+    
+        
+        if ( $this->getUser() )
+        { 
+            if ( $request->isMethod('POST') ) {
+                
+                $token = $request->get("csrf_token");
+
+                if (!$this->isCsrfTokenValid('select', $token))
+                {
+                    return new Response("Operation not allowed",  Response::HTTP_BAD_REQUEST,
+                        ['content-type' => 'text/plain']);
+                }
+
+                $episode_id = $request->get("episode_id");
+                $persona_id = $request->get("char_id");
+                $actor_id = $request->get("actor_id");  
+
+
+
+
+                $this->personas_repository->persona_in_episode_has_actor($episode_id, $persona_id, $actor_id);
+                return $this->redirectToRoute('app_assign_actor_show');
+
+
+                
+            }        
+            
+            // Method is GET
+            $session = $request->getSession();
+            $serie_id = $session->get('serie_id');
+            $data['episodes'] = $this->personas_repository->get_episodes($serie_id);
+            $data['actors'] = $this->user_repository->get_actors();
+            $data['episode_id'] = $episode_id;
+
+            $actors = $this->personas_repository->get_persona_in_episode_has_actor();
+            for ($i=0; $i<count($data['episodes']); $i++) {
+                for ($j=0; $j<count($actors); $j++) {
+                    if( $data['episodes'][$i]['id'] == $actors[$j]['episode_id'] )
+                        $data['episodes'][$i]['actor_name'] = $actors[$j]['actor_name'];
+                }               
+            }
+
+            return $this->render('assign_actor/change.html.twig', $data);
+        }
+
+        return $this->redirectToRoute('app_login');
+
+    }    
 }

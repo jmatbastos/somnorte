@@ -256,7 +256,7 @@ INSERT INTO `no_of_lines` (`id`, `episode_id`, `persona_id`, `no_of_lines`) VALU
 
 CREATE TABLE `personas` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL,
+  `name` varchar(80) NOT NULL,
   `series_REF` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -426,7 +426,7 @@ ALTER TABLE `no_of_lines`
 --
 ALTER TABLE `personas`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`,`series_REF`) USING HASH,
+  ADD UNIQUE KEY `name` (`name`,`series_REF`),
   ADD KEY `series_REF` (`series_REF`);
 
 --

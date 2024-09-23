@@ -42,23 +42,33 @@
                 <th scope="col">&nbsp;</th>                 
                 </tr>
             </thead>
-            <form method="post">
-			      <input type="hidden" name="csrf_token" value="{{ csrf_token('select') }}">
+
             <tbody>
               {%for e in episodes %}
                 <tr>
-                <td>{{e.REF}}</td>
-                <td>{{e.episode_id}}</td>
-                <td>{{e.char_name}}</td>
-                <td>{{e.no_of_lines}}</td>              
-                {% if e.actor_name %}
-                        <td>{{e.actor_name}}</td>
-                        <td><a href="{{ path('app_assign_actor_change', { 'episode_id': e.id }) }}" class="btn btn-outline-info btn-sm">Change</a></td>   
-                {% else %}
-                  <td>&nbsp;</td>
-                  <td>&nbsp;</td>
-                {% endif %}
-             
+                    <td>{{e.REF}}</td>
+                    <td>{{e.episode_id}}</td>
+                    <td>{{e.char_name}}</td>
+                    <td>{{e.no_of_lines}}</td>
+                    {% if e.id == episode_id %}
+                        <form method="post">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token('select') }}">
+                        <input type="hidden" name="char_id" value="{{ e.char_id }}">                
+                            <td><select name="actor_id" class="form-select">
+                            {%for a in actors %}
+                                {%if e.actor_name ==  a.name %}
+                                <option value="{{a.id}}" selected>{{a.name}}</option>
+                                {% else %}
+                                <option value="{{a.id}}">{{a.name}}</option>  
+                                {% endif %}
+                            {% endfor %}
+                            </select></td>
+                            <td><button type="submit" class="btn btn-outline-info btn-sm" name="episode_id" value="{{e.id}}">Change</button></td>   
+                    {% else %}
+                    <td>{{e.actor_name}}</td>
+                    <td>&nbsp;</td>
+                    {% endif %}
+                
                 </tr
               {% endfor %}  
             </tbody>

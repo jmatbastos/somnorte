@@ -43,7 +43,7 @@
 					<div class="form-check">
 						{%for c in characters %}			
 						<input class="form-check-input" type="checkbox" name="characters[]" value="{{c.id}}" id="flexCheckDefault">
-						<label class="form-check-label" for="flexCheckDefault">{{c.name}}</label>
+						<label class="form-check-label" for="flexCheckDefault">{{c.name}}&nbsp;&nbsp;[ {{c.actor}} ]</label>
 						<br>
 						{% endfor %}
 					</div>
@@ -54,8 +54,9 @@
 					<h4>Actors</h4>
 
 						<div>
-						
-						<select name="actors[]" class="form-select" aria-label="select actor to assign" multiple>
+
+						<select name="actors[]" class="form-select" aria-label="select actor to assign">
+							<option value="#" selected disabled>Select actor</option>
 							{%for a in actors %}
 							<option value="{{a.id}}">{{a.name}}</option>
 							{% endfor %}
@@ -66,12 +67,7 @@
 						
 						</div>
 
-						<br>
-						<ul style="text-align:left;">
-						<li>To select multiple actors:</li>
-						<li>For windows: Hold down the control (ctrl) button</li>
-						<li>For Mac: Hold down the command button</li>
-						</ul>
+
 
 					
 

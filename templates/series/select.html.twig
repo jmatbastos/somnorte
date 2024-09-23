@@ -1,0 +1,74 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Series{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+{% endblock %}
+
+{% block body %}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+			<div class="row justify-content-center">
+				<h3>Select Series:</h3>
+			</div>
+		  
+		    </br>
+
+    	<form method="post">
+			<input type="hidden" name="csrf_token" value="{{ csrf_token('select') }}">
+
+		  <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">Series REF</th>
+                <th scope="col">Series name</th>
+                <th scope="col">Client</th>               
+                </tr>
+            </thead>
+            <tbody>
+              {%for s in series %}
+                <tr>
+                 <td><input class="form-check-input" type="radio" name="serie_id" value="{{s.REF}}"></td>               
+                <td>{{s.REF}}</td>
+                <td>{{s.name}}</td>
+                <td>{{s.client_name}}</td>
+                </tr
+              {% endfor %}  
+            </tbody>
+            </table>
+        <br>
+		    <a href="{{ path('app_home') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>
+        <button type="submit" class="btn btn-outline-info btn-lg float-right">Select</button>
+		
+      </form>
+    
+    </div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script>
+	$(function () {
+	  $('#close').click(function () {
+		window.close()
+		return false
+	  })
+	})
+</script>
+{% endblock %}

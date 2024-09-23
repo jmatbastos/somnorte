@@ -16,17 +16,7 @@ class SeriesRepository extends ServiceEntityRepository
         parent::__construct($registry, Series::class);
     }
 
-    public function get_clients()
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        
-        $sql = "SELECT id, name FROM `users` WHERE roles ='[\"CLIENT\"]'";
 
-        $resultSet =  $conn->executeQuery($sql);
-
-        return $resultSet->fetchAllAssociative();
-
-    } 
 
     public function create_series($ref, $name, $client_id)
     {
@@ -37,4 +27,16 @@ class SeriesRepository extends ServiceEntityRepository
         $conn->executeQuery($sql);
 
     }
+    public function get_series()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT s.id, s.REF, s.name, u.name as client_name FROM `series` as s INNER JOIN users as u ON s.client_id=u.id";
+
+        $resultSet =  $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    } 
+
 }

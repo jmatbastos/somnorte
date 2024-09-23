@@ -40,17 +40,6 @@ class CharacterRepository extends ServiceEntityRepository
         return $resultSet->fetchAllAssociative();
 
     }  
-    public function get_actors()
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        
-        $sql = "SELECT id, name FROM `users` WHERE roles ='[\"ACTOR\"]'";
-
-        $resultSet =  $conn->executeQuery($sql);
-
-        return $resultSet->fetchAllAssociative();
-
-    } 
 
     public function get_episodes()
     {
@@ -58,6 +47,7 @@ class CharacterRepository extends ServiceEntityRepository
         
         $sql = "SELECT s.REF, c.episode_id, c.char_name, c.no_of_lines, u.name as actor_name FROM `users` as u RIGHT JOIN (characters as c INNER JOIN series AS s ON c.series_id=s.id)  ON c.actor_id=u.id";
 
+        
         $resultSet =  $conn->executeQuery($sql);
 
         return $resultSet->fetchAllAssociative();

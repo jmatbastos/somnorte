@@ -90,7 +90,7 @@ class UploadController extends AbstractController
 
                // file upload success
                $filesystem = new Filesystem();
-               $contents = $filesystem->readFile("c:\\xampp\\htdocs\\somnorte\\public\\uploads\\$filename");
+               $contents = $filesystem->readFile("/Users/jbastos/public_html/somnorte/uploads/$filename");
 
                $contents_array = explode(PHP_EOL,$contents);
                

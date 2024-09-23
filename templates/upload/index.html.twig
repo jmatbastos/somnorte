@@ -18,7 +18,7 @@
             <div class="contact_content">
                 <div class="contact_form_container">
 
-                    <h3 style="text-align: center">Characters file upload</h3>                
+                    <h3 style="text-align: center">Episode file upload</h3>                
                 
                     {% if errors > 0 %}
                         <h2>Validation failed</h2>
@@ -64,7 +64,7 @@
 
     <script>
         function popUP() {
-        window.alert("file upload restrictions: \n- allowed file types: csv\n- maximum size: 1000kB\n\nformat:\nserie_id,episode_id,character name,number of lines\nexample:\n1,101,ANNALEE,4\n1,101,BORIBON,7");
+        window.alert("file upload restrictions: \n- allowed file types: csv\n- maximum size: 1000kB\n\nFORMAT:\nserie_id,episode_id,character name,number of lines\nexample:\nP_10,101,ANNALEE,4\nP_10,101,BORIBON,7");
         }
     </script>
 
