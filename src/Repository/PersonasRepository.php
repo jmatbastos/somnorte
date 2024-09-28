@@ -33,20 +33,6 @@ class PersonasRepository extends ServiceEntityRepository
 
     }
 
-    /*
-    public function get_personas($series_REF)
-    {
-        $conn = $this->getEntityManager()->getConnection();
-        
-        $sql = "SELECT id, name FROM `personas` WHERE series_REF='$series_REF'";
-
-        $resultSet = $conn->executeQuery($sql);
-
-        return $resultSet->fetchAllAssociative();
-
-    } 
-    */
-
     public function get_personas($series_REF)
     {
         $conn = $this->getEntityManager()->getConnection();

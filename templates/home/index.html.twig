@@ -10,19 +10,8 @@
 {% endblock %}
 
 {% block body %}
+{{ parent() }}
 
-<div class="container" style="text-align: right;  width: 800px;">
-				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-					<p><small>{{'You are logged in as' | trans}} {{app.user.name}}
-					{% if is_granted('ROLE_ADMIN') %}
-					&nbsp;(Administrator)
-					{% endif %}
-                    {% if is_granted('ROLE_DIRECTOR') %}
-					&nbsp;(Director)
-					{% endif %}
-					</small>&nbsp;<a href="{{ path('app_logout') }}">logout </a></p>
-				{% endif %}	
-</div>
 
 <div class="container" style="margin-top: 100px; text-align: center;  width: 800px;">
 	
@@ -41,7 +30,6 @@
                     {% if not app.user %}
 
                     <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_login') }}">  login  <div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>                
-                    <p><div class="button button_1" style="width: 300px;"><a href="{{ path('register') }}">register<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
                     {% endif %}                
                     {% if app.user %}
 
@@ -66,7 +54,19 @@
                             <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor') }}">Assign actor<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>	
                         </div>
                     </div>                    
-                    {% endif %} 
+                    {% else %} 
+
+                    <div>
+                        <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p><div class="button button_1" style="width: 300px;" ><a href="#">Users<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div>
+                        <div style="margin-top: -90px; margin-left: 550px; padding: 5px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="button button_1" style="width: 300px;"><a href="{{ path('register') }}">register new user<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
+                            <p><div class="button button_1" style="width: 300px;"><a href="{{ path('user_show') }}">show users<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div> 
+                    </div> 
+
+                    {% endif %}  
                  
                     
 

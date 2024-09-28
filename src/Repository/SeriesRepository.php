@@ -39,4 +39,16 @@ class SeriesRepository extends ServiceEntityRepository
 
     } 
 
+    public function get_series_by_user_ID($user_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT * FROM `series` WHERE client_id='$user_id'";
+
+        $resultSet =  $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    }
+
 }

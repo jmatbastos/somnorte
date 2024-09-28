@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Sep 14, 2024 at 01:13 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Sep 24, 2024 at 11:05 AM
+-- Server version: 8.0.32
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `somnorte`
+-- Database: `db_somnorte`
 --
 
 -- --------------------------------------------------------
@@ -28,16 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `characters` (
-  `id` int(11) NOT NULL,
-  `episode_id` int(11) NOT NULL,
-  `char_name` text NOT NULL,
-  `actor_id` int(11) DEFAULT NULL,
-  `no_of_lines` int(3) NOT NULL,
-  `series_id` int(11) NOT NULL,
-  `studio_id` int(11) DEFAULT NULL,
-  `director_id` int(11) DEFAULT NULL,
+  `id` int NOT NULL,
+  `episode_id` int NOT NULL,
+  `char_name` text COLLATE utf8mb4_general_ci NOT NULL,
+  `actor_id` int DEFAULT NULL,
+  `no_of_lines` int NOT NULL,
+  `series_id` int NOT NULL,
+  `studio_id` int DEFAULT NULL,
+  `director_id` int DEFAULT NULL,
   `date` date DEFAULT NULL,
-  `id_cachet` int(11) DEFAULT NULL,
+  `id_cachet` int DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -113,10 +113,10 @@ INSERT INTO `characters` (`id`, `episode_id`, `char_name`, `actor_id`, `no_of_li
 --
 
 CREATE TABLE `doctrine_migration_versions` (
-  `version` varchar(191) NOT NULL,
+  `version` varchar(191) COLLATE utf8mb3_unicode_ci NOT NULL,
   `executed_at` datetime DEFAULT NULL,
-  `execution_time` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `execution_time` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
 -- Dumping data for table `doctrine_migration_versions`
@@ -133,9 +133,9 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 --
 
 CREATE TABLE `episodes` (
-  `id` int(11) NOT NULL,
-  `episode` int(11) NOT NULL,
-  `series_REF` varchar(80) NOT NULL
+  `id` int NOT NULL,
+  `episode` int NOT NULL,
+  `series_REF` varchar(80) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -156,6 +156,7 @@ INSERT INTO `episodes` (`id`, `episode`, `series_REF`) VALUES
 (47, 116, 'P_10'),
 (101, 117, 'P_10'),
 (104, 117, 'P_11'),
+(156, 118, 'P_10'),
 (105, 118, 'P_11');
 
 -- --------------------------------------------------------
@@ -165,10 +166,10 @@ INSERT INTO `episodes` (`id`, `episode`, `series_REF`) VALUES
 --
 
 CREATE TABLE `messenger_messages` (
-  `id` bigint(20) NOT NULL,
-  `body` longtext NOT NULL,
-  `headers` longtext NOT NULL,
-  `queue_name` varchar(190) NOT NULL,
+  `id` bigint NOT NULL,
+  `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `available_at` datetime NOT NULL COMMENT '(DC2Type:datetime_immutable)',
   `delivered_at` datetime DEFAULT NULL COMMENT '(DC2Type:datetime_immutable)'
@@ -181,10 +182,10 @@ CREATE TABLE `messenger_messages` (
 --
 
 CREATE TABLE `no_of_lines` (
-  `id` int(11) NOT NULL,
-  `episode_id` int(11) NOT NULL,
-  `persona_id` int(11) NOT NULL,
-  `no_of_lines` int(4) NOT NULL
+  `id` int NOT NULL,
+  `episode_id` int NOT NULL,
+  `persona_id` int NOT NULL,
+  `no_of_lines` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -246,7 +247,10 @@ INSERT INTO `no_of_lines` (`id`, `episode_id`, `persona_id`, `no_of_lines`) VALU
 (102, 101, 2, 11),
 (103, 101, 3, 5),
 (104, 104, 13, 13),
-(105, 105, 14, 25);
+(105, 105, 14, 25),
+(156, 156, 1, 13),
+(157, 156, 2, 11),
+(158, 156, 8, 5);
 
 -- --------------------------------------------------------
 
@@ -255,9 +259,9 @@ INSERT INTO `no_of_lines` (`id`, `episode_id`, `persona_id`, `no_of_lines`) VALU
 --
 
 CREATE TABLE `personas` (
-  `id` int(11) NOT NULL,
-  `name` varchar(80) NOT NULL,
-  `series_REF` varchar(80) NOT NULL
+  `id` int NOT NULL,
+  `name` varchar(80) COLLATE utf8mb4_general_ci NOT NULL,
+  `series_REF` varchar(80) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -266,19 +270,19 @@ CREATE TABLE `personas` (
 
 INSERT INTO `personas` (`id`, `name`, `series_REF`) VALUES
 (1, 'ANNALEE', 'P_10'),
-(2, 'BORIBON', 'P_10'),
-(3, 'MÉDICO', 'P_10'),
-(4, 'NARRADOR', 'P_10'),
+(9, 'BEM', 'P_10'),
 (5, 'BEN', 'P_10'),
+(2, 'BORIBON', 'P_10'),
 (6, 'COELHO', 'P_10'),
 (7, 'ESQUILO', 'P_10'),
-(8, 'OURIÇO', 'P_10'),
-(9, 'BEM', 'P_10'),
-(10, 'GATINHO', 'P_10'),
 (11, 'FRIZZY', 'P_10'),
-(12, 'SNEEZY', 'P_10'),
+(10, 'GATINHO', 'P_10'),
+(14, 'LARILAS', 'P_11'),
+(3, 'MÉDICO', 'P_10'),
+(4, 'NARRADOR', 'P_10'),
 (13, 'NARRADOR', 'P_11'),
-(14, 'LARILAS', 'P_11');
+(8, 'OURIÇO', 'P_10'),
+(12, 'SNEEZY', 'P_10');
 
 -- --------------------------------------------------------
 
@@ -287,10 +291,10 @@ INSERT INTO `personas` (`id`, `name`, `series_REF`) VALUES
 --
 
 CREATE TABLE `persona_has_actors` (
-  `id` int(11) NOT NULL,
-  `persona_id` int(11) NOT NULL,
-  `actor_id` int(11) NOT NULL,
-  `no_of_lines` int(4) DEFAULT NULL
+  `id` int NOT NULL,
+  `persona_id` int NOT NULL,
+  `actor_id` int NOT NULL,
+  `no_of_lines` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -298,9 +302,38 @@ CREATE TABLE `persona_has_actors` (
 --
 
 INSERT INTO `persona_has_actors` (`id`, `persona_id`, `actor_id`, `no_of_lines`) VALUES
-(7, 1, 1, NULL),
-(8, 2, 2, NULL),
-(9, 3, 3, NULL);
+(17, 3, 1, NULL),
+(20, 4, 2, NULL),
+(22, 1, 2, NULL),
+(24, 2, 1, NULL),
+(25, 5, 3, NULL),
+(26, 6, 3, NULL),
+(27, 12, 3, NULL),
+(28, 13, 2, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `persona_in_episode_has_actor`
+--
+
+CREATE TABLE `persona_in_episode_has_actor` (
+  `id` int NOT NULL,
+  `episode_id` int NOT NULL,
+  `persona_id` int NOT NULL,
+  `actor_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `persona_in_episode_has_actor`
+--
+
+INSERT INTO `persona_in_episode_has_actor` (`id`, `episode_id`, `persona_id`, `actor_id`) VALUES
+(31, 1, 1, 3),
+(32, 2, 2, 3),
+(33, 3, 3, 2),
+(34, 7, 4, 1),
+(36, 104, 13, 1);
 
 -- --------------------------------------------------------
 
@@ -309,10 +342,10 @@ INSERT INTO `persona_has_actors` (`id`, `persona_id`, `actor_id`, `no_of_lines`)
 --
 
 CREATE TABLE `series` (
-  `id` int(11) NOT NULL,
-  `REF` varchar(80) DEFAULT NULL,
-  `name` text NOT NULL,
-  `client_id` int(11) NOT NULL
+  `id` int NOT NULL,
+  `REF` varchar(80) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name` text COLLATE utf8mb4_general_ci NOT NULL,
+  `client_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -333,8 +366,8 @@ INSERT INTO `series` (`id`, `REF`, `name`, `client_id`) VALUES
 --
 
 CREATE TABLE `studios` (
-  `id` int(11) NOT NULL,
-  `name` text NOT NULL
+  `id` int NOT NULL,
+  `name` text COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -344,7 +377,8 @@ CREATE TABLE `studios` (
 INSERT INTO `studios` (`id`, `name`) VALUES
 (1, 'Estudio 1'),
 (2, 'Estudio 2'),
-(3, 'Estudio 3');
+(3, 'Estudio 3'),
+(4, 'Estudio 4');
 
 -- --------------------------------------------------------
 
@@ -353,27 +387,27 @@ INSERT INTO `studios` (`id`, `name`) VALUES
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `email` varchar(180) NOT NULL,
-  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)' CHECK (json_valid(`roles`)),
-  `password` varchar(255) NOT NULL,
-  `name` varchar(180) NOT NULL,
-  `nif` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` int NOT NULL,
+  `email` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `roles` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '(DC2Type:json)',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(180) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nif` int NOT NULL
+) ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `roles`, `password`, `name`, `nif`) VALUES
-(1, 'jose.bastos@gmail.com', '[\"ACTOR\"]', '$2y$13$qRAIdQpTLci7P5ocf.T.3O36xNKOxLoT/t1/8S1qs976x/Gj6C8ZG', 'Jose Bastos', 0),
-(2, 'lixo@gmail.com', '[\"ACTOR\"]', '$2y$13$gLF7ZQwNaLepqGbPrGmKB.nHpbWqbKcUbkRIRd4QbALe7Hr7QC94K', 'Pedro Murta', 123456),
-(3, 'lixo3@gmail.com', '[\"ACTOR\"]', '$2y$13$ukaUZq7rglfnmrjOnfCOgulKazqRiSFOUJ3AVwUx8yDn5qt/lEbjG', 'António Sancho', 123456),
-(4, 'lixo4@gmail.com', '[\"DIRETOR\"]', '$2y$13$wpG4QCURy.BAjJE1g5uoRe15Qv7BJjrSZbj8zvEVitd9.qLaUV8Nq', 'Ricardo Tavares', 123456),
-(5, 'a12345@gmail.com', '[\"DIRETOR\"]', '$2y$13$Ms2/V2Db1rwA3cdzvqGt5OLBUweJV2x7egBHItTEE89IVw8C3fuNq', 'José Silva', 12345),
-(6, 'luis.amaral@gmail.com', '[\"CLIENT\"]', '$2y$13$ftVpBbHG3.raeYthRAJ8KedsS0ApwPFOeqXa1Xq/RpdnM8VYP2En2', 'Luis Amaral', 123456789),
-(7, 'luis.araujo@gmail.com', '[\"ADMINISTRATOR\"]', '$2y$13$zNiTYcniraPWXmPZPGWVZuEvnMrY9khKCTfvEjal7jfiBjE69IhPe', 'Luis Araujo', 217844871),
-(8, 'mario.amaral@gmail.com', '[\"CLIENT\"]', '$2y$13$PyWFpDCNsPBpgxVI/eWLbeaSfqlAx.gy/wDnHg5WUkimXtNTJSTg2', 'Mario Amaral', 222222222);
+(1, 'jose.bastos@gmail.com', '[\"ROLE_ACTOR\"]', '$2y$13$qRAIdQpTLci7P5ocf.T.3O36xNKOxLoT/t1/8S1qs976x/Gj6C8ZG', 'Jose Bastos', 123456780),
+(2, 'pmurta@gmail.com', '[\"ROLE_ACTOR\"]', '$2y$13$gLF7ZQwNaLepqGbPrGmKB.nHpbWqbKcUbkRIRd4QbALe7Hr7QC94K', 'Pedro Murta', 123456781),
+(3, 'asancho@gmail.com', '[\"ROLE_ACTOR\"]', '$2y$13$ukaUZq7rglfnmrjOnfCOgulKazqRiSFOUJ3AVwUx8yDn5qt/lEbjG', 'António Sancho', 123456782),
+(4, 'ricardo.tavares@gmail.com', '[\"ROLE_DIRECTOR\"]', '$2y$13$wpG4QCURy.BAjJE1g5uoRe15Qv7BJjrSZbj8zvEVitd9.qLaUV8Nq', 'Ricardo Tavares', 123456783),
+(5, 'jsilva@gmail.com', '[\"ROLE_DIRECTOR\"]', '$2y$13$zNiTYcniraPWXmPZPGWVZuEvnMrY9khKCTfvEjal7jfiBjE69IhPe', 'José Silva', 123456784),
+(6, 'luis.amaral@gmail.com', '[\"ROLE_CLIENT\"]', '$2y$13$ftVpBbHG3.raeYthRAJ8KedsS0ApwPFOeqXa1Xq/RpdnM8VYP2En2', 'Luis Amaral', 123456789),
+(7, 'luis.araujo@gmail.com', '[\"ROLE_ADMIN\"]', '$2y$13$zNiTYcniraPWXmPZPGWVZuEvnMrY9khKCTfvEjal7jfiBjE69IhPe', 'Luis Araujo', 217844871),
+(8, 'mario.amaral@gmail.com', '[\"ROLE_CLIENT\"]', '$2y$13$PyWFpDCNsPBpgxVI/eWLbeaSfqlAx.gy/wDnHg5WUkimXtNTJSTg2', 'Mario Amaral', 123456785);
 
 --
 -- Indexes for dumped tables
@@ -438,6 +472,15 @@ ALTER TABLE `persona_has_actors`
   ADD KEY `actor_id` (`actor_id`);
 
 --
+-- Indexes for table `persona_in_episode_has_actor`
+--
+ALTER TABLE `persona_in_episode_has_actor`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `episode_id` (`episode_id`),
+  ADD KEY `persona_id` (`persona_id`),
+  ADD KEY `actor_id` (`actor_id`);
+
+--
 -- Indexes for table `series`
 --
 ALTER TABLE `series`
@@ -466,55 +509,61 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `characters`
 --
 ALTER TABLE `characters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
 
 --
 -- AUTO_INCREMENT for table `episodes`
 --
 ALTER TABLE `episodes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT for table `messenger_messages`
 --
 ALTER TABLE `messenger_messages`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `no_of_lines`
 --
 ALTER TABLE `no_of_lines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=162;
 
 --
 -- AUTO_INCREMENT for table `personas`
 --
 ALTER TABLE `personas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `persona_has_actors`
 --
 ALTER TABLE `persona_has_actors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `persona_in_episode_has_actor`
+--
+ALTER TABLE `persona_in_episode_has_actor`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `series`
 --
 ALTER TABLE `series`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `studios`
 --
 ALTER TABLE `studios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -532,27 +581,35 @@ ALTER TABLE `characters`
 -- Constraints for table `episodes`
 --
 ALTER TABLE `episodes`
-  ADD CONSTRAINT `episodes_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`);
+  ADD CONSTRAINT `episodes_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `no_of_lines`
 --
 ALTER TABLE `no_of_lines`
-  ADD CONSTRAINT `no_of_lines_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`),
-  ADD CONSTRAINT `no_of_lines_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`);
+  ADD CONSTRAINT `no_of_lines_ibfk_1` FOREIGN KEY (`episode_id`) REFERENCES `episodes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `no_of_lines_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `personas`
 --
 ALTER TABLE `personas`
-  ADD CONSTRAINT `personas_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`);
+  ADD CONSTRAINT `personas_ibfk_1` FOREIGN KEY (`series_REF`) REFERENCES `series` (`REF`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `persona_has_actors`
 --
 ALTER TABLE `persona_has_actors`
-  ADD CONSTRAINT `persona_has_actors_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `persona_has_actors_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`);
+  ADD CONSTRAINT `persona_has_actors_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `persona_has_actors_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `persona_in_episode_has_actor`
+--
+ALTER TABLE `persona_in_episode_has_actor`
+  ADD CONSTRAINT `persona_in_episode_has_actor_ibfk_1` FOREIGN KEY (`actor_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `persona_in_episode_has_actor_ibfk_2` FOREIGN KEY (`persona_id`) REFERENCES `personas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `persona_in_episode_has_actor_ibfk_3` FOREIGN KEY (`episode_id`) REFERENCES `no_of_lines` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `series`

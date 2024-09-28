@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block body %}
+{{ parent() }}
 
 <div class="super_container">
 
@@ -75,7 +76,7 @@
             </form>
             </table>
         <br>
-		    <a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg float" style="float:right;">Back</a>
+		    <a href="{{ path('app_assign_actor_show') }}" class="btn btn-outline-warning btn-lg float" style="float:right;">Cancel</a>
 		</div>	
 	</div>
 

@@ -1,0 +1,94 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Show Users{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+<style>
+	.float{
+		position:fixed;
+		bottom:80px;
+		right:40px;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+			<div style="text-align: center;">
+				
+                {% for message in app.flashes('notice') %}
+                    <div class="alert alert-info" style="text-align:center">
+                    {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning" style="text-align:center">
+                    {{ message }}
+                    </div>
+                {% endfor %}
+
+                <br/>
+                
+                <h3>Users:</h3>
+			</div>
+		  
+		    </br>
+		  
+		  <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">NIF</th>
+                <th scope="col">ROLE</th>
+                <th scope="col">&nbsp;</th>                
+                
+                </tr>
+            </thead>
+
+            <tbody>
+              {%for u in users %}
+                <tr>
+                <td>{{u.name}}</td>
+                <td>{{u.email}}</td>
+                <td>{{u.nif}}</td>
+                <td>{{u.roles}}</td>              
+                <td><a href="{{ path('user_delete', { 'user_id': u.id }) }}" data-confirm="Are you sure you want to delete user {{u.name}} ?"><i class="fa fa-trash" aria-hidden="true"></i></a></td>               
+                </tr
+              {% endfor %}  
+            </tbody>
+
+            </table>
+        <br>
+		    <a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg float" style="float:right;">Back</a>
+		</div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script>
+    $(document).on('click', ':not(form)[data-confirm]', function(e){
+        if(!confirm($(this).data('confirm'))){
+            e.stopImmediatePropagation();
+            e.preventDefault();
+        }
+    })
+</script>
+{% endblock %}

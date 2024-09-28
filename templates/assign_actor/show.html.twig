@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block body %}
+{{ parent() }}
 
 <div class="super_container">
 
@@ -42,8 +43,6 @@
                 <th scope="col">&nbsp;</th>                 
                 </tr>
             </thead>
-            <form method="post">
-			      <input type="hidden" name="csrf_token" value="{{ csrf_token('select') }}">
             <tbody>
               {%for e in episodes %}
                 <tr>
@@ -53,7 +52,7 @@
                 <td>{{e.no_of_lines}}</td>              
                 {% if e.actor_name %}
                         <td>{{e.actor_name}}</td>
-                        <td><a href="{{ path('app_assign_actor_change', { 'episode_id': e.id }) }}" class="btn btn-outline-info btn-sm">Change</a></td>   
+                        <td><a href="{{ path('app_assign_actor_change', { 'episode_id': e.id }) }}" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></td>   
                 {% else %}
                   <td>&nbsp;</td>
                   <td>&nbsp;</td>
@@ -62,7 +61,7 @@
                 </tr
               {% endfor %}  
             </tbody>
-            </form>
+
             </table>
         <br>
 		    <a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg float" style="float:right;">Back</a>
@@ -76,12 +75,4 @@
 {% block javascript %}
 {{ parent() }}
 
-<script>
-	$(function () {
-	  $('#close').click(function () {
-		window.close()
-		return false
-	  })
-	})
-</script>
 {% endblock %}

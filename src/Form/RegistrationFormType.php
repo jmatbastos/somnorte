@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -28,14 +29,15 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('roles', TextType::class, [
+            ->add('roles', ChoiceType::class, [
                 'mapped' => false,
-                'required' => false,                 
-                'constraints' => [
-                new NotBlank([
-                    'message' => 'Please enter the user role',
-                    ]),
-                ],
+                'required' => true,
+                'choices'  => [
+                    'Client' => 'ROLE_CLIENT',
+                    'Actor' => 'ROLE_ACTOR',
+                    'Director' => 'ROLE_DIRECTOR',
+                    'Administrator' => 'ROLE_ADMIN',
+                ],                
             ])
             ->add('nif', IntegerType::class, [
                 'required' => false,

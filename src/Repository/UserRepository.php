@@ -33,6 +33,29 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function get_users()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT id, name, nif, email, roles FROM `users` ";
+
+        $resultSet =  $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    }
+
+
+
+
+
+    public function delete_user($user_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql="DELETE FROM users WHERE id='$user_id'";
+        $conn->executeQuery($sql);
+    }
+
     public function get_actors()
     {
         $conn = $this->getEntityManager()->getConnection();
