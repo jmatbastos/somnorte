@@ -18,7 +18,7 @@
             <div class="contact_content">
                 <div class="contact_form_container">
 
-                    <h3 style="text-align: center">Episode file upload</h3>                
+                    <h3 style="text-align: center">Invoice upload</h3>                
                 
                     {% if errors > 0 %}
                         <h2>Validation failed</h2>
@@ -33,7 +33,37 @@
                 
                     <form enctype="multipart/form-data" method="post">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token('file') }}">
-                                                
+
+
+                        <div class="form-group">
+                            <label >Type</label>
+                            <select name="type" class="form-control">
+                                <option value="Invoice">Invoice</option>
+                                <option value="Invoice/Receipt">Invoice/Receipt</option>
+                                <option value="Receipt">Receipt</option> 
+                            </select>
+                        </div>								
+                        <br> 
+
+                        <div class="form-group">
+                            <label >Reference</label>
+                            <input type="text" class="form-control" name="reference" />
+                        </div>								
+                        <br>  
+
+                        <div class="form-group">
+                            <label >Value (in Euros)</label>
+                            <input type="number" class="form-control" name="value"  step="0.01" />
+                        </div>								
+                        <br>                         
+
+                        <div class="form-group">
+                            <label >Date</label>
+                            <input type="date" class="form-control" name="date" />
+                        </div>								
+                        <br> 
+
+                                            
                         <div class="form-group">
                             <br>
                             <input type="file" class="form-control" id="fileUpload" name="file" />
@@ -46,7 +76,7 @@
 
                         <br>
                         
-                        <a href="{{ path('app_home') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>								
+                        <a href="{{ path('cachets_show') }}" class="btn btn-outline-warning btn-lg" >Cancel</a>								
                         <button type="submit" class="btn btn-outline-primary btn-lg float-right">Upload</button>
                     
                     </form>
@@ -64,7 +94,7 @@
 
     <script>
         function popUP() {
-        window.alert("file upload restrictions: \n- allowed file types: csv\n- maximum size: 1000kB\n\nFORMAT:\nserie_id;episode_id;character name;number of lines\nexample:\nP_10;101;ANNALEE;4\nP_10;101;BORIBON;7");
+        window.alert("file upload restrictions: \n- allowed file types: pdf\n- maximum size: 10 MB\n\n");
         }
     </script>
 

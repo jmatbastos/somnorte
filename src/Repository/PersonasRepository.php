@@ -20,7 +20,7 @@ class PersonasRepository extends ServiceEntityRepository
     public function insert_personas($contents)
     {
     
-        $contents_array = explode(',', $contents);   
+        $contents_array = explode(';', $contents);   
 
         $conn = $this->getEntityManager()->getConnection();
 

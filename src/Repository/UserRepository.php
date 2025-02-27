@@ -46,6 +46,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
 
+    public function get_user($id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT name,email,roles,nif FROM `users` WHERE id ='$id'";
+
+        $resultSet =  $conn->executeQuery($sql);
+
+        return $resultSet->fetchAllAssociative();
+
+    }
+
+    public function update_user($user_id,$roles,$email,$password)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $password_hash=password_hash($password, PASSWORD_DEFAULT);
+        
+        $sql = "UPDATE users SET roles='$roles',email='$email',password='$password_hash' WHERE id='$user_id'"; 
+
+        $conn->executeQuery($sql);
+   
+
+    }
+
+               
 
 
 

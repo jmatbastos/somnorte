@@ -19,7 +19,7 @@ class EpisodesRepository extends ServiceEntityRepository
     public function insert_episodes($contents)
     {
     
-        $contents_array = explode(',', $contents);  
+        $contents_array = explode(';', $contents);  
  
 
         $conn = $this->getEntityManager()->getConnection();
@@ -36,7 +36,7 @@ class EpisodesRepository extends ServiceEntityRepository
     public function insert_no_of_lines($contents)
     {    
 
-        $contents_array = explode(',', $contents);
+        $contents_array = explode(';', $contents);
 
 
 

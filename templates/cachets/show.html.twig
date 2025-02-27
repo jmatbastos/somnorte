@@ -1,0 +1,96 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Show cachets{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+<style>
+	.float{
+		position:fixed;
+		bottom:80px;
+		right:40px;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+			<div class="row justify-content-center">
+				<h3>Cachets:</h3>
+			</div>
+		  
+		    </br>
+		  
+		  <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Reference</th>
+                <th scope="col">Month</th>
+                <th scope="col">NIF</th>
+                <th scope="col">Name</th>
+                <th scope="col">Cachet Inicial</th>
+                <th scope="col">Pago</th>  
+                <th scope="col">Saldo</th> 
+                <th scope="col">Cachet contab.</th> 
+                <th scope="col">Cachet p/contab.</th>  
+                <th scope="col">Status</th>  
+                <th scope="col">Invoice Ref.</th>
+                <th scope="col">Receipt Ref.</th>                                    
+                </tr>
+            </thead>
+            <tbody>
+              {%for c in cachets %}
+                <tr>
+                <td>{{c.ref}}</td>
+                <td>{{c.month}}</td>
+                <td>{{c.nif}}</td>
+                <td>{{c.name}}</td>              
+                <td>{{c.cachet_inicial}}</td>  
+                <td>{{c.pago}}</td>    
+                <td>{{c.saldo}}</td>  
+                <td>{{c.cachet_contab}}</td> 
+                <td>{{c.cachet_p_contab}}</td> 
+                {% if c.status |trim == "Pago" %}
+                        <td>{{c.status}}</td> 
+                {% else %}
+                        <td><a href="{{ path('invoice_upload', { 'ref': c.ref }) }}" >{{c.status}}</a></td>   
+                {% endif %} 
+                 {% if c.invoice_ref != '' %}
+                <td><a href="{{ path('invoice_show', { 'ref': c.invoice_ref |replace({'/': '||'}) |url_encode }) }}" >{{c.invoice_ref}}</a></td> 
+               {% else %} 
+                  <td>&nbsp;</td>
+                {% endif %} 
+                 {% if c.receipt_ref != '' %}                               
+                <td><a href="{{ path('invoice_show', { 'ref': c.receipt_ref |replace({'/': '||'}) |url_encode }) }}" >{{c.receipt_ref}}</a></td>
+               {% else %} 
+                  <td>&nbsp;</td>
+                {% endif %}                                                
+                </tr
+              {% endfor %}  
+            </tbody>
+
+            </table>
+        <br>
+		    <a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg float" style="float:right;">Back</a>
+		</div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+{% endblock %}

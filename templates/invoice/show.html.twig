@@ -1,0 +1,76 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Show Invoice{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/news_responsive.css">
+<style>
+	.float{
+		position:fixed;
+		bottom:80px;
+		right:40px;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+
+<div class="super_container">
+
+
+	
+
+	<!-- News -->
+	<div class="news">
+		<div class="container">
+			<div class="row justify-content-center">
+				<h3>Invoice/Receipt:</h3>
+			</div>
+		  
+		    </br>
+		  
+		  <table class="table">
+            <thead>
+                <tr>
+                <th scope="col">Reg. ID</th>
+                <th scope="col">Reference</th>                
+                <th scope="col">Type</th>
+                <th scope="col">Value</th>
+                <th scope="col">Date</th>
+                <th scope="col">Registration Date</th>
+                <th scope="col">File</th>                               
+                </tr>
+            </thead>
+            <tbody>
+              {%for i in invoices %}
+                <tr>
+                <td>{{i.ref}}</td>
+                <td>{{i.invoice_ref}}</td>
+                <td>{{i.type}}</td>
+                <td>{{i.value}}&nbsp;€</td>  
+                <td>{{i.invoice_date}}</td> 
+                <td>{{i.register_date}}</td>                             
+                <td><a href="{{ path('invoice_download', { 'filename': i.filename }) }}" >download</a></td>   
+
+             
+                </tr
+              {% endfor %}  
+            </tbody>
+
+            </table>
+        <br>
+		    <a href="{{ path('cachets_show') }}" class="btn btn-outline-info btn-lg float" style="float:right;">Back</a>
+		</div>	
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+{% endblock %}

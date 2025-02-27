@@ -54,21 +54,31 @@
                             <p><div class="button button_1" style="width: 300px;"><a href="{{ path('app_assign_actor') }}">Assign actor<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>	
                         </div>
                     </div>                    
-                    {% else %} 
 
+                    {% endif %} 
+
+                    {% if is_granted('ROLE_ADMIN') %}
                     <div>
                         <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <p><div class="button button_1" style="width: 300px;" ><a href="#">Users<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
                         </div>
                         <div style="margin-top: -90px; margin-left: 550px; padding: 5px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <div class="button button_1" style="width: 300px;"><a href="{{ path('register') }}">register new user<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
+                            <div class="button button_1" style="width: 300px;"><a href="{{ path('user_register') }}">register new user<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
                             <p><div class="button button_1" style="width: 300px;"><a href="{{ path('user_show') }}">show users<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
                         </div> 
                     </div> 
 
                     {% endif %}  
                  
-                    
+                    <div>
+                        <div id="dropdownMenuButton"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <p><div class="button button_1" style="width: 300px;" ><a href="#">Cachets<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div>
+                        <div style="margin-top: -90px; margin-left: 550px; padding: 5px;" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="button button_1" style="width: 300px;"><a href="{{ path('cachets_upload') }}">upload cachets<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div>
+                            <p><div class="button button_1" style="width: 300px;"><a href="{{ path('cachets_show') }}">show cachets<div class="button_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></div></a></div></p>
+                        </div> 
+                    </div>                     
 
                     {% endif %}
 

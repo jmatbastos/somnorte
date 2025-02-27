@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update user{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact.css">
+<link rel="stylesheet" type="text/css" href="{{ asset('styles') }}/contact_responsive.css">
+{% endblock %}
+
+{% block body %}
+<div class="super_container">
+
+	<!-- Contact -->
+
+	<div class="contact">
+	
+		<div class="container">
+			<div class="row row-xl-eq-height">
+				<div class="col-xl-3">
+				</div>					
+				<!-- Contact Content -->
+				<div class="col-xl-6">
+					<div class="contact_content">
+						<div class="contact_form_container">
+                        <h1 style="text-align: center">Update User</h1>
+							<form name="registration_form" method="post">							
+								<div class="row">
+									<div class="col-lg-6 contact_name_col">
+										<label>Name:</label>
+										<input type="text" name="name"  value={{user.name}} disabled class="contact_input" />
+									</div>
+                                    <div class="col-lg-6 contact_name_col">
+										<label>NIF:</label>
+										<input type="number" name="nif" value={{user.nif}} disabled class="contact_input" />
+									</div>
+                                </div>
+								<br>                                
+                                <div class="row">
+                                    <div class="col-lg-6 contact_name_col">
+										<label class="required">ROLE:</label>
+										<select  name="roles"  class="contact_input">
+											{%if user.roles == '["ROLE_CLIENT"]' %}
+												<option selected value="ROLE_CLIENT">Client</option>
+											{% else %}
+												<option value="ROLE_CLIENT">Client</option>												
+											{% endif %}
+											{%if user.roles == '["ROLE_ACTOR"]' %}					
+												<option selected value="ROLE_ACTOR">Actor</option>
+											{% else %}
+												<option value="ROLE_ACTOR">Actor</option>
+											{% endif %}
+											{%if user.roles == '["ROLE_DIRECTOR"]' %}	
+												<option selected value="ROLE_DIRECTOR">Director</option>
+											{% else %}
+												<option value="ROLE_DIRECTOR">Director</option>
+											{% endif %}
+											{%if user.roles == '["ROLE_ADMIN"]' %}
+												<option selected value="ROLE_ADMIN">Administrator</option>
+											{% else %}											
+												<option value="ROLE_ADMIN">Administrator</option>
+											{% endif %}
+										</select>
+									</div>                                    
+									<div class="col-lg-6">
+										<label class="required">Email:</label>											
+										<input type="email" name="email" value={{user.email}} required maxlength="180" class="contact_input" />
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-lg-6 contact_name_col">
+										<label >Password</label>
+										<input type="password"  required name="password" class="contact_input" />
+									</div>
+									<div class="col-lg-6">
+										<label>Repeat Password</label>
+										<input type="password" required name="repeat_password" class="contact_input" />
+									</div>
+								</div>								
+								<br>
+								
+								
+								
+								
+								<br>
+								<a href="{{ path('app_home') }}" class="btn btn-outline-info btn-lg" >Cancel</a>
+								<button type="submit" class="btn btn-outline-primary btn-lg float-right">Update</button>
+							<input type="hidden" name="csrf_token" value="{{ csrf_token('update') }}">
+							</form>
+						</div>
+
+					</div>
+				</div>
+				<div class="col-xl-3">
+				</div>	
+			</div>
+		</div>				
+	</div>
+</div>
+{% endblock %}
+
+

@@ -25,10 +25,51 @@ class RegistrationController extends AbstractController
         $this->user_repository = $user_repository;        
     }
     
+    #[Route('/user/update/{user_id}', name: 'user_update')]
+    public function user_update(Request $request, $user_id): Response
+    {
+        if ( $this->getUser() )
+        { 
+        
+            if ( $request->isMethod('POST') ) {
+            
+                $token = $request->get("csrf_token");
+
+                if (!$this->isCsrfTokenValid('update', $token))
+                {
+                    return new Response("Operation not allowed",  Response::HTTP_BAD_REQUEST,
+                        ['content-type' => 'text/plain']);
+                }
+
+                $roles = '["'. $request->get("roles") . '"]';
+                $email = $request->get("email");
+                $password = $request->get("password");
+                $repeat_password = $request->get("repeat_password");
+
+                $this->user_repository->update_user($user_id,$roles,$email,$password);
+
+                $this->addFlash(
+                    'notice',
+                    'Success: User updated!'
+                );
+
+
+                return $this->redirectToRoute('app_home');
+                
+            }
+
+
+            $resultSet = $this->user_repository->get_user($user_id);
+            $data['user'] = $resultSet[0];
+            return $this->render('registration/update.html.twig', $data);
+        }
+
+        		
+        return $this->redirectToRoute('app_login');
+    }   
     
-    
-    #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/user/register', name: 'user_register')]
+    public function user_register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);

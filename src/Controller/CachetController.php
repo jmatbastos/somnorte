@@ -10,33 +10,27 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use App\Repository\CharacterRepository;
-use App\Repository\PersonasRepository;
-use App\Repository\EpisodesRepository;
+use App\Repository\CachetsRepository;
 use Symfony\Component\Filesystem\Filesystem;
 
 
 
-class UploadController extends AbstractController
+class CachetController extends AbstractController
 {
     
     
 
 	private $validator;
-    private $character_repository;
-    private $personas_repository;	
-    private $episodes_repository;	
+    private $cachets_repository;	
 
-	public function __construct(ValidatorInterface $validator, CharacterRepository $character_repository, PersonasRepository $personas_repository, EpisodesRepository $episodes_repository)
+	public function __construct(ValidatorInterface $validator, CachetsRepository $cachets_repository)
     {
         $this->validator = $validator;
-        $this->character_repository = $character_repository;
-        $this->personas_repository = $personas_repository;
-        $this->episodes_repository = $episodes_repository;				
+        $this->cachets_repository = $cachets_repository;			
     }
     
-    #[Route('/upload', name: 'upload')]
-    public function index(Request $request): Response
+    #[Route('/cachets/upload', name: 'cachets_upload')]
+    public function cachets_upload(Request $request): Response
     {
          
 		if ($this->getUser())
@@ -70,16 +64,14 @@ class UploadController extends AbstractController
 			   $constraints = new Assert\Collection([
 			   'file' => new Assert\File([
                     'maxSize' => '1024k',
-					'maxSizeMessage' => 'The image is too large. Allowed maximum size is {{ limit }} {{ suffix }}',
-                    'mimeTypes' => ['text/csv',],
-                    'mimeTypesMessage' => 'Please upload a valid csv file',
+					'maxSizeMessage' => 'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}',
 			     ]),
 			   ]);
 
 				$data = $this->requestValidation($input, $constraints);
 				  
 				if ( $data['errors'] > 0)
-					   return $this->render('upload/index.html.twig', $data);
+					   return $this->render('cachets/upload.html.twig', $data);
 				  				  
 
 			   try {
@@ -101,13 +93,12 @@ class UploadController extends AbstractController
                //for($i=0; $i<count($contents_array); $i++)
                // $this->character_repository->insert_characters($contents_array[$i]);
 
-			   for($i=1; $i<count($contents_array); $i++) {
+			   for($i=0; $i<count($contents_array); $i++) {
 					if (strlen($contents_array[$i]) != 0) {
-//						if ($i==0 && $contents_array[$i][0]==0xEF && $contents_array[$i][1]==0xBB && $contents_array[$i][2]==0xBF) 
-//							$contents_array[$i] = substr($contents_array[$i],3); 
-						$this->personas_repository->insert_personas($contents_array[$i]);
-						$this->episodes_repository->insert_episodes($contents_array[$i]); 
-						$this->episodes_repository->insert_no_of_lines($contents_array[$i]);
+						if ($i==0 && $contents_array[$i][0]==0xEF && $contents_array[$i][1]==0xBB && $contents_array[$i][2]==0xBF) 
+							$contents_array[$i] = substr($contents_array[$i],3); 
+						    $this->cachets_repository->insert_users($contents_array[$i]);
+						    $this->cachets_repository->insert_cachets($contents_array[$i]);                            
 					}					   
 				}
 			
@@ -122,12 +113,26 @@ class UploadController extends AbstractController
 			} 
 			 
 			 $data['errors'] = 0;
-			 return $this->render('upload/index.html.twig', $data); 
+			 return $this->render('cachets/upload.html.twig', $data); 
 
 		}
 		
 		return $this->redirectToRoute('app_login');
 	}
+
+    #[Route('/cachets/show', name: 'cachets_show')]
+    public function cachets_show(Request $request): Response
+    {
+        if ( $this->getUser() )
+        { 
+            $data['cachets'] = $this->cachets_repository->get_cachets();
+
+            return $this->render('cachets/show.html.twig', $data);
+        }
+
+        return $this->redirectToRoute('app_login');
+
+    }
 
     private function requestValidation($input, $constraints)
     {
@@ -154,3 +159,4 @@ class UploadController extends AbstractController
             return $data;
     }
 }
+

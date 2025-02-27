@@ -10,33 +10,27 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use App\Repository\CharacterRepository;
-use App\Repository\PersonasRepository;
-use App\Repository\EpisodesRepository;
+use App\Repository\InvoicesRepository;
 use Symfony\Component\Filesystem\Filesystem;
 
 
 
-class UploadController extends AbstractController
+class UploadInvoiceController extends AbstractController
 {
     
     
 
 	private $validator;
-    private $character_repository;
-    private $personas_repository;	
-    private $episodes_repository;	
+    private $invoices_repository;	
 
-	public function __construct(ValidatorInterface $validator, CharacterRepository $character_repository, PersonasRepository $personas_repository, EpisodesRepository $episodes_repository)
+	public function __construct(ValidatorInterface $validator, InvoicesRepository $invoices_repository)
     {
         $this->validator = $validator;
-        $this->character_repository = $character_repository;
-        $this->personas_repository = $personas_repository;
-        $this->episodes_repository = $episodes_repository;				
+        $this->invoices_repository = $invoices_repository;				
     }
     
-    #[Route('/upload', name: 'upload')]
-    public function index(Request $request): Response
+    #[Route('/invoice/upload/{ref}', name: 'invoice_upload')]
+    public function invoice_upload(Request $request, $ref): Response
     {
          
 		if ($this->getUser())
@@ -52,7 +46,14 @@ class UploadController extends AbstractController
 					   ['content-type' => 'text/plain']);
 			   }
 		  
-			   $file = $request->files->get('file');
+			   
+               $type = $request->get("type");
+               $value = $request->get("value");
+               $date = $request->get("date");
+			   $reference = $request->get("reference");
+               
+               
+               $file = $request->files->get('file');
 
 			   if (empty($file))
 			   {
@@ -62,24 +63,24 @@ class UploadController extends AbstractController
 			  
 			   
 			   
-			   $filename = $file->getClientOriginalName();
+			   $filename = substr(time(),-4) . $file->getClientOriginalName();
 			   
 			   
 			   $input = ['file' => $file];
 
 			   $constraints = new Assert\Collection([
 			   'file' => new Assert\File([
-                    'maxSize' => '1024k',
-					'maxSizeMessage' => 'The image is too large. Allowed maximum size is {{ limit }} {{ suffix }}',
-                    'mimeTypes' => ['text/csv',],
-                    'mimeTypesMessage' => 'Please upload a valid csv file',
+                    'maxSize' => '10M',
+					'maxSizeMessage' => 'The file is too large. Allowed maximum size is {{ limit }} {{ suffix }}',
+                    'extensions' => ['pdf',],
+                    'extensionsMessage' => 'Please upload a valid pdf file',
 			     ]),
 			   ]);
 
 				$data = $this->requestValidation($input, $constraints);
 				  
 				if ( $data['errors'] > 0)
-					   return $this->render('upload/index.html.twig', $data);
+					   return $this->render('invoice/upload.html.twig', $data);
 				  				  
 
 			   try {
@@ -88,46 +89,48 @@ class UploadController extends AbstractController
 				   throw new FileException('Failed to upload file ' . $e->getMessage());
 			   }
 
-               // file upload success
-               $filesystem = new Filesystem();
-			   $contents = $filesystem->readFile("c:\\xampp\\htdocs\\somnorte\\public\\uploads\\$filename");
-               //$contents = $filesystem->readFile("/Users/jbastos/public_html/somnorte/uploads/$filename");
-               //$contents = $filesystem->readFile("/var/www/html/somnorte/uploads/$filename");			   
-
-               $contents_array = explode(PHP_EOL,$contents);
+               // file upload success	
                
-               // insert into database
-
-               //for($i=0; $i<count($contents_array); $i++)
-               // $this->character_repository->insert_characters($contents_array[$i]);
-
-			   for($i=1; $i<count($contents_array); $i++) {
-					if (strlen($contents_array[$i]) != 0) {
-//						if ($i==0 && $contents_array[$i][0]==0xEF && $contents_array[$i][1]==0xBB && $contents_array[$i][2]==0xBF) 
-//							$contents_array[$i] = substr($contents_array[$i],3); 
-						$this->personas_repository->insert_personas($contents_array[$i]);
-						$this->episodes_repository->insert_episodes($contents_array[$i]); 
-						$this->episodes_repository->insert_no_of_lines($contents_array[$i]);
-					}					   
-				}
-			
+               $this->invoices_repository->create_Invoices($this->getUser()->getId(), $ref, $reference, $type, $value, $date, $filename);
 
 				$this->addFlash(
                     'notice',
-                    'Success: CVS File uploaded!'
+                    'Success: Invoice File uploaded!'
                 );
 			   
-			   return $this->redirectToRoute('app_home');
+			   return $this->redirectToRoute('cachets_show');
 			 
 			} 
 			 
 			 $data['errors'] = 0;
-			 return $this->render('upload/index.html.twig', $data); 
+			 return $this->render('invoice/upload.html.twig', $data); 
 
 		}
 		
 		return $this->redirectToRoute('app_login');
 	}
+
+	#[Route('/invoice/show/{ref}', name: 'invoice_show')]
+    public function invoice_show($ref): Response
+    {
+        if ( $this->getUser() )
+        { 
+            $ref=urldecode($ref);
+			$ref=str_replace("||", "/", $ref);
+			$data['invoices'] = $this->invoices_repository->get_invoice($ref);
+
+            return $this->render('invoice/show.html.twig', $data);
+        }
+
+        return $this->redirectToRoute('app_login');
+
+    }
+
+	#[Route('/invoice/download/{filename}', name: 'invoice_download')]
+	 public function download($filename): Response
+	 {
+		 return $this->file("../public/uploads/$filename");
+	 }
 
     private function requestValidation($input, $constraints)
     {
@@ -154,3 +157,4 @@ class UploadController extends AbstractController
             return $data;
     }
 }
+
